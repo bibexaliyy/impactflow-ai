@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ImpactFlow AI{% endblock %}</title>
+    <!-- Dev-only CDN build. Swap for a compiled Tailwind build (via npm)
+         before production launch — CDN Tailwind is not meant for prod. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    {% csrf_token %}
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen">
+    <nav class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+        <a href="{% url 'projects:list' %}" class="font-semibold text-lg">ImpactFlow AI</a>
+        {% if user.is_authenticated %}
+            <div class="flex items-center gap-4 text-sm">
+                <span class="text-gray-500">{{ user.organization.name }}</span>
+                <a href="{% url 'accounts:logout' %}" class="text-gray-600 hover:text-gray-900">Log out</a>
+            </div>
+        {% endif %}
+    </nav>
+    <main class="max-w-4xl mx-auto px-6 py-8">
+        {% for message in messages %}
+            <div class="mb-4 p-3 rounded bg-blue-50 text-blue-800 text-sm">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </main>
+    <script>
+document.addEventListener('htmx:configRequest', (event) => {
+    event.detail.headers['X-CSRFToken'] = getCookie('csrftoken');
+});
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+</body>
+</html>

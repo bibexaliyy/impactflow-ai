@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-xl font-semibold">Your Projects</h1>
+    <a href="{% url 'projects:create' %}" class="bg-gray-900 text-white px-4 py-2 rounded text-sm">
+        + New Project
+    </a>
+</div>
+
+{% if projects %}
+    <div class="space-y-3">
+        {% for project in projects %}
+            <a href="{% url 'projects:detail' project.pk %}"
+               class="block border border-gray-200 rounded-lg p-4 hover:border-gray-400 bg-white">
+                <div class="font-medium">{{ project.project_title }}</div>
+                <div class="text-sm text-gray-500">{{ project.location }} &middot; {{ project.created_at|date:"M j, Y" }}</div>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="text-gray-500">No projects yet. Create your first one to generate a report.</p>
+{% endif %}
+{% endblock %}

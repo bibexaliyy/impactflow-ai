@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-6">New Project</h1>
+<form method="post" class="space-y-5 bg-white border border-gray-200 rounded-lg p-6">
+    {% csrf_token %}
+    {% for field in form %}
+        <div>
+            <label class="block text-sm font-medium mb-1">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+                <p class="text-xs text-gray-400 mt-1">{{ field.help_text }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="bg-gray-900 text-white px-5 py-2 rounded text-sm">
+        Save Project
+    </button>
+</form>
+{% endblock %}

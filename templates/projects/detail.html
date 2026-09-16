@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-1">{{ project.project_title }}</h1>
+<p class="text-sm text-gray-500 mb-6">{{ project.location }} &middot; {{ project.project_date }}</p>
+
+<div id="report-area">
+    {% if report %}
+        {% include "reports/_report_preview.html" %}
+    {% else %}
+        <button
+            hx-post="{% url 'projects:generate_report' project.pk %}"
+            hx-target="#report-area"
+            hx-swap="innerHTML"
+            hx-indicator="#generating"
+            class="bg-gray-900 text-white px-5 py-2 rounded text-sm">
+            Generate Report
+        </button>
+        <span id="generating" class="htmx-indicator text-sm text-gray-500 ml-3">Generating…</span>
+    {% endif %}
+</div>
+{% endblock %}
